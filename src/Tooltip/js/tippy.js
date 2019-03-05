@@ -74,6 +74,20 @@ class Tippy {
   * @return {Element}
   */
   getPopperElement(el) {
+
+    /**
+     * This method could be called many times for performance issues with the react lifecycle.
+     * This generates unnecessary calls of this method and also causes unnecessary `getPopperElement`
+     * alerts because the store is empty, however, `getPopperElement` alert is useful when there are
+     * instances in the store but the `el` object does not have matches
+     */
+
+    const storeIsEmpty = this.store.length < 1;
+
+    if (storeIsEmpty) {
+      return;
+    }
+
     try {
       return find(this.store, data => data.el === el).popper
     } catch (e) {
